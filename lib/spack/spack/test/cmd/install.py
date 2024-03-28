@@ -821,6 +821,10 @@ def test_install_no_add_in_env(tmpdir, mock_fetch, install_mockery, mutable_mock
         inst_out = install("pkg-a", output=str)
         assert len([x for x in e.all_specs() if x.installed and x.name == "pkg-a"]) == 2
 
+        find_output = find("-l", output=str)
+        print("BEFORE")
+        print(find_output)
+
         # Install an unambiguous dependency spec (that already exists as a dep
         # in the environment) and make sure it gets installed (w/ deps),
         # but is not added to the environment.
@@ -832,7 +836,16 @@ def test_install_no_add_in_env(tmpdir, mock_fetch, install_mockery, mutable_mock
         assert "libelf" in find_output
         assert "callpath" not in find_output
 
+        print("AFTER")
+        print(find_output)
+
         post_install_specs = e.all_specs()
+        print(
+            "\n".join([str((s.dag_hash(7), s.name, s in env_specs)) for s in post_install_specs])
+        )
+        spec = SpackCommand("spec")
+        print(spec("/tms4vqx"))
+        print(spec("/3tlweds"))
         assert all([s in env_specs for s in post_install_specs])
 
         # Make sure we can install a concrete dependency spec from a spec.json
