@@ -584,7 +584,7 @@ class CompilerSpec:
     __slots__ = "name", "versions"
 
     def __init__(self, *args):
-        raise TypeError("CompilerSpec is being removed")
+        raise SystemExit("CompilerSpec is being removed")
         nargs = len(args)
         if nargs == 1:
             arg = args[0]
@@ -686,7 +686,7 @@ class CompilerSpec:
     @staticmethod
     def from_dict(d):
         d = d["compiler"]
-        return CompilerSpec(d["name"], vn.VersionList.from_dict(d))
+        return Spec(f"{d['name']}@{vn.VersionList.from_dict(d)}", external_path="/dev-null/", concrete=True)
 
     @property
     def display_str(self):
@@ -1391,6 +1391,8 @@ class Spec:
     _prefix = None
     abstract_hash = None
 
+    compiler = lang.Const(None)
+
     @staticmethod
     def default_arch():
         """Return an anonymous spec for the default architecture"""
@@ -1430,7 +1432,6 @@ class Spec:
         self.versions = vn.VersionList(":")
         self.variants = vt.VariantMap(self)
         self.architecture = None
-        self.compiler = None
         self.compiler_flags = FlagMap(self)
         self._dependents = _EdgeMap(store_by=EdgeDirection.parent)
         self._dependencies = _EdgeMap(store_by=EdgeDirection.child)
@@ -3047,7 +3048,7 @@ class Spec:
 
         if self.compiler is not None and other.compiler is not None:
             changed |= self.compiler.constrain(other.compiler)
-        elif self.compiler is None:
+        elif self.compiler is None and other.compiler is not None:
             changed |= self.compiler != other.compiler
             self.compiler = other.compiler
 
@@ -3491,7 +3492,7 @@ class Spec:
         self.name = other.name
         self.versions = other.versions.copy()
         self.architecture = other.architecture.copy() if other.architecture else None
-        self.compiler = other.compiler.copy() if other.compiler else None
+        # FIXME: (removing compiler attribute) self.compiler = other.compiler.copy() if other.compiler else None
         if cleardeps:
             self._dependents = _EdgeMap(store_by=EdgeDirection.parent)
             self._dependencies = _EdgeMap(store_by=EdgeDirection.child)
@@ -4427,9 +4428,8 @@ class SpecfileReaderBase:
             spec.architecture = ArchSpec.from_dict(node)
 
         if "compiler" in node:
-            spec.compiler = CompilerSpec.from_dict(node)
-        else:
-            spec.compiler = None
+            # Annotate the compiler spec, might be used later
+            spec.compiler_annotation = CompilerSpec.from_dict(node)
 
         for name, values in node.get("parameters", {}).items():
             if name in _valid_compiler_flags:
