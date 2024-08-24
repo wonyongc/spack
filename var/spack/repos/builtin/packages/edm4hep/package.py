@@ -10,9 +10,9 @@ from spack.package import *
 class Edm4hep(CMakePackage):
     """Event data model of Key4hep."""
 
-    homepage = "https://github.com/key4hep/EDM4hep"
-    url = "https://github.com/key4hep/EDM4hep/archive/v00-01.tar.gz"
-    git = "https://github.com/key4hep/EDM4hep.git"
+    homepage = "https://github.com/wonyongc/EDM4hep"
+    url = "https://github.com/wonyongc/EDM4hep/archive/v00-01.tar.gz"
+    git = "https://github.com/wonyongc/EDM4hep.git"
 
     maintainers("vvolkl", "jmcarcell", "tmadlener")
 
