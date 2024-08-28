@@ -57,6 +57,11 @@ class Whizard(AutotoolsPackage):
     variant("openloops", default=False, description="builds with openloops")
     variant("latex", default=False, description="data visualization with latex")
 
+    # Patch to fix the build with pythia8 8.310 before 3.1.4
+    # See https://gitlab.tp.nt.uni-siegen.de/whizard/public/-/blob/master/BUGS?ref_type=heads
+    # for a list of issues with pythia
+    patch("pythia8310.patch", when="@3:3.1.3 ^pythia8@8.310:",)
+
     depends_on("libtirpc", type=("build", "link", "run"))
     depends_on("ocaml@4.02.3:", type="build", when="@3:")
     depends_on("ocaml@4.02.3:~force-safe-string", type="build", when="@:2")

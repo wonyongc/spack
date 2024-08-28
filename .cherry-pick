@@ -1,0 +1,41 @@
+git remote add jmcarcell https://github.com/jmcarcell/spack
+git fetch jmcarcell -q
+
+# add a recent version of madgraph, remove when https://github.com/spack/spack/pull/41128 is merged
+# git cherry-pick 21624c8ad4da2b3e1f05fdec704b0424cafd5e3f -X theirs --no-commit
+
+# add vdt for CPATH, needed for podio+rntuple
+git cherry-pick f97fabc3ff12527e5220ea6917719a73f8bd4315 -X theirs --no-commit
+
+# Add a patch to fix whizard (re pythia8), remove when https://github.com/spack/spack/pull/43045 is merged
+# git cherry-pick 643026356bc15f77ea8a09f53aa92a49dc7320a7 -X theirs --no-commit
+
+# Gaudi: Add a patch for GCC 11 and C++20 (not necessary in v38 and onwards)
+# git cherry-pick 7b7fea18aa485f994ac6e3ffc16cdf6030bb4b2c -X theirs --no-commit
+# This second patch is needed
+# git cherry-pick ead56b5bcb5dcb7e7ce87283bdd1dbf085e1aa3c -X theirs --no-commit
+# Gaudi: Add v38, remove when https://github.com/spack/spack/pull/42856 is merged
+# git cherry-pick 009ce044c164473fd73ca455bc57378942278815 -X theirs --no-commit
+
+# podio: add rpath, remove when https://github.com/spack/spack/pull/42844 is merged
+git cherry-pick 4d3b81d73b9dcbbe176d6baf3c00a4032307f6a8 -X theirs --no-commit
+
+# Add a new version for ruff, remove when https://github.com/spack/spack/pull/43069 is merged
+# git cherry-pick 859046ec91b78a17a26e31957390d15b7642b9e0 -X theirs --no-commit
+
+# Fix version 5.0 for garfielpp, the tar file is not healthy, see https://gitlab.cern.ch/garfield/garfieldpp/-/issues/14
+# git cherry-pick 49c5e92adae605af87c07b95c40b2444449c4ce6 -X theirs --no-commit
+
+
+# Introduces incompatibilities for us
+# ROOT uses py-numpy who uses py-cython
+# But py-zmq uses py-gevent
+# The only solution to this is to use python 3.8
+# See https://github.com/spack/spack/pull/39164
+# git cherry-pick 043e5f7e69022aa684aa8c325e498a6c0f6ab316 -X theirs --no-commit
+
+# This is a workaround for issues with the cppy package; when installing pip isn't able to fetch the name
+# See https://github.com/pypa/setuptools/issues/3269
+# I'm not sure what the solution or why this happens with pip 23 when the supposed fix in https://github.com/pypa/pip/pull/11466 this appears already in 22.3
+# git cherry-pick 24052cfde14d6646b69a92908a79e734290b9705 -X theirs --no-commit
+
