@@ -20,6 +20,7 @@ class Podio(CMakePackage):
     tags = ["hep", "key4hep"]
 
     version("master", branch="master")
+    version("1.1", sha256="2cb5040761f3da4383e1f126da25d68e99ecd8398e0ff12e7475a3745a7030a6")
     version("1.0.1", sha256="915531a2bcf638011bb6cc19715bbc46d846ec8b985555a1afdcd6abc017e21b")
     version("1.0", sha256="491f335e148708e387e90e955a6150e1fc2e01bf6b4980b65e257ab0619559a9")
     version("0.99", sha256="c823918a6ec1365d316e0a753feb9d492e28903141dd124a1be06efac7c1877a")
@@ -86,6 +87,7 @@ class Podio(CMakePackage):
         description="Build the RDataSource for reading podio collections",
         when="@1.0.2:",
     )
+    variant("rpath", default=False, description="Set RPATH for PODIO libraries")
 
     depends_on("root@6.08.06: cxxstd=17", when="cxxstd=17")
     depends_on("root@6.14:", when="+datasource")
@@ -121,6 +123,7 @@ class Podio(CMakePackage):
             self.define_from_variant("ENABLE_SIO", "sio"),
             self.define_from_variant("ENABLE_RNTUPLE", "rntuple"),
             self.define_from_variant("ENABLE_DATASOURCE", "datasource"),
+            self.define_from_variant("PODIO_SET_RPATH", "rpath"),
             self.define("CMAKE_CXX_STANDARD", self.spec.variants["cxxstd"].value),
             self.define("BUILD_TESTING", self.run_tests),
         ]

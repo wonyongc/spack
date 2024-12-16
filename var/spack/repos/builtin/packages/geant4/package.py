@@ -191,6 +191,12 @@ class Geant4(CMakePackage):
     # See https://bugzilla-geant4.kek.jp/show_bug.cgi?id=2556
     patch("package-cache.patch", level=1, when="@10.7.0:11.1.2^cmake@3.17:")
 
+    # Patch for gen trap
+    patch("gen-trap.patch", level=1, when="@11.2.0:11.2.2")
+
+    # Patch for gen trap
+    patch("twisted-tubes.patch", level=1, when="@11.2.0:11.2.2")
+
     # NVHPC: "thread-local declaration follows non-thread-local declaration"
     conflicts("%nvhpc", when="+threads")
 

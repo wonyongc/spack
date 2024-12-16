@@ -379,6 +379,8 @@ class CMakeBuilder(BaseBuilder):
             ]
         )
 
+        args.append(define('CMAKE_INSTALL_LIBDIR', 'lib'))
+
         return args
 
     @staticmethod

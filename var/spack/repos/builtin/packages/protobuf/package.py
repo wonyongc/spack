@@ -174,3 +174,11 @@ class Protobuf(CMakePackage):
             return join_path(self.stage.source_path, "cmake")
         else:
             return self.stage.source_path
+
+    @run_after("install")
+    def create_symlinks(self):
+        import os
+        # Create symlink from lib64 to lib
+        with working_dir(self.prefix):
+            if not os.path.exists("lib64"):
+                os.symlink("lib", "lib64")
