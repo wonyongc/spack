@@ -21,7 +21,7 @@ class Edm4hep(CMakePackage):
     license("Apache-2.0")
 
     version("main", branch="main")
-    version("0.10.5", sha256="fbe0349013fdb968db6413a3901573cd2d52305c105f1f44014ead3b2a189040")
+    version("0.10.5", sha256="0ea4b7cb935f3dfcae3e41b2d8899c5fc0729c920edef8ef200a5000c551e41f")
     version(
         "0.10.4",
         sha256="76d51947525bc8a27b62f567033255da2e632d42d07a32ff578887948d56bd6f",
